@@ -17,8 +17,14 @@ clean-targets:
 models:
   finflow_analytics:
     staging:
+      +database: finflow_silver
       +schema: silver
       +materialized: view
     marts:
+      +database: finflow_gold
       +schema: gold
+      +materialized: table
+    quarantine:
+      +database: finflow_silver
+      +schema: quarantine
       +materialized: table
