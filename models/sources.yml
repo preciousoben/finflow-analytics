@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: finflow_bronze
+    schema: raw
+    description: "Raw bronze layer - unclean data as loaded from source CSVs"
+
+    tables:
+      - name: customers
+        description: "Raw customer signups with intentional data quality issues"
+        columns:
+          - name: customer_id
+            description: "Unique customer identifier - contains some duplicates"
+          - name: signup_date
+            description: "Date of signup - mixed date formats"
+          - name: cac_usd
+            description: "Customer acquisition cost - contains negatives and nulls"
+
+      - name: subscriptions
+        description: "Raw subscription records - contains duplicates and null plans"
+        columns:
+          - name: subscription_id
+            description: "Unique subscription identifier - contains duplicates"
+          - name: mrr_usd
+            description: "Monthly recurring revenue - contains zero values"
+
+      - name: transactions
+        description: "Raw payment transactions - contains nulls, negatives, duplicates"
+        columns:
+          - name: transaction_id
+            description: "Unique transaction identifier - contains duplicates"
+          - name: customer_id
+            description: "References customers table - contains nulls (~3%)"
+          - name: amount
+            description: "Transaction amount - contains negatives and zeros"
+
+      - name: monthly_revenue
+        description: "Raw monthly revenue rollup per customer"
+        columns:
+          - name: revenue_id
+            description: "Unique revenue record identifier"

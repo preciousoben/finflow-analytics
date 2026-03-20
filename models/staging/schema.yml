@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer data - silver layer"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: signup_date
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: acquisition_channel
+        tests:
+          - not_null
+
+  - name: stg_subscriptions
+    description: "Cleaned subscription data - silver layer"
+    columns:
+      - name: subscription_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: plan
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: status
+        tests:
+          - not_null
+
+  - name: stg_transactions
+    description: "Cleaned transaction data - silver layer"
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - not_null
+
+  - name: stg_monthly_revenue
+    description: "Cleaned monthly revenue data - silver layer"
+    columns:
+      - name: revenue_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: mrr_usd
+        tests:
+          - not_null
+
+  - name: quarantine_customers
+    description: "Quarantined customer records with data quality issues"
+    columns:
+      - name: row_id
+        tests:
+          - not_null
+
+  - name: quarantine_subscriptions
+    description: "Quarantined subscription records with data quality issues"
+    columns:
+      - name: row_id
+        tests:
+          - not_null
