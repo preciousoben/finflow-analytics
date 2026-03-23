@@ -64,6 +64,7 @@ cleaned as (
       and customer_id is not null
       and subscription_id is not null
       and try_to_date(month, 'YYYY-MM-DD') <= current_date
+      and plan is not null
 )
 
 select * from cleaned
