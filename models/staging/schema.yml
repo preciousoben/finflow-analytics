@@ -74,3 +74,10 @@ models:
       - name: row_id
         tests:
           - not_null
+  
+  - name: quarantine_transactions
+    description: "Quarantined transaction records with data quality issues"
+    columns:
+      - name: row_id
+        tests:
+          - not_null
