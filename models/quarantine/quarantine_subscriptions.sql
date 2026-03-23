@@ -57,11 +57,18 @@ quarantined as (
         'investigate_billing_system'            as recommended_action
 
     from deduped
-    where
+    where 
+        (
         customer_id is null
         or plan is null
         or try_to_number(mrr_usd) is null
         or try_to_number(mrr_usd) <= 0
+        )
+
+        {% if is_incremental() %}
+        and current_timestamp() > (select max(flagged_at) from {{ this }})
+        {% endif %}
+    
 )
 
 select * from quarantined

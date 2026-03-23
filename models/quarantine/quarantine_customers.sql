@@ -41,6 +41,8 @@ quarantined as (
                 then 'null_cac'
             when try_to_number(cac_usd) <= 0
                 then 'negative_cac'
+            when email is null
+                then 'null_email'
             else 'unknown'
         end                                     as issue_type,
 
@@ -58,10 +60,19 @@ quarantined as (
 
     from deduped
     where
-        customer_id is null
-        or try_to_date(signup_date, 'YYYY-MM-DD') is null
-        or try_to_number(cac_usd) is null
-        or try_to_number(cac_usd) <= 0
+        (
+            customer_id is null
+            or try_to_date(signup_date, 'YYYY-MM-DD') is null
+            or try_to_number(cac_usd) is null
+            or try_to_number(cac_usd) <= 0
+            or email is null
+        )
+
+        {% if is_incremental() %}
+        and current_timestamp() > (select max(flagged_at) from {{ this }})
+        {% endif %}
 )
 
 select * from quarantined
+
+
