@@ -59,8 +59,9 @@ cleaned as (
 
     from deduped
     where customer_id is not null
-      and try_to_date(signup_date, 'YYYY-MM-DD') is not null
-      and try_to_number(cac_usd) > 0
+    and try_to_date(signup_date, 'YYYY-MM-DD') is not null
+    and try_to_number(cac_usd) > 0
+    and email is not null
 )
 
 select * from cleaned

@@ -89,9 +89,10 @@ cleaned as (
 
     from deduped
     where transaction_id is not null
-      and status is not null
-      -- Exclude future dated transactions
-      and try_to_date(transaction_date, 'YYYY-MM-DD') <= current_date
+    and status is not null
+    and customer_id is not null
+    and try_to_number(amount) > 0
+    and try_to_date(transaction_date, 'YYYY-MM-DD') <= current_date
 )
 
 select * from cleaned
